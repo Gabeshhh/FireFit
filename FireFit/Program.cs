@@ -7,7 +7,8 @@ namespace  FireFit;
 public class Program
 {
     // Création des variables qui permettent d'accéder aux var dans tout le fichier
-    static List<Intervention> interventions = new(); 
+    static List<Intervention> interventions = new();
+    private static List<Sport> seanceSport = new();
     static bool continuer = true;
     
     // Création de la fonction Main (Point d'entrée du programme - Appelle les autres fonctions)
@@ -24,7 +25,14 @@ public class Program
     // Fonction pour afficher le menu
     public static void AfficherMenu()
     {
-        Console.WriteLine("Que voulez-vous faire ? \n1. Entrée une nouvelle intervention\n2. Voir toutes les interventions \n3. Voir nombre internvetions \n4. Quitter");
+        Console.WriteLine("Que voulez-vous faire ?\n" +
+                          "1. Entrée une nouvelle intervention\n" +
+                          "2. Voir toutes les interventions\n" +
+                          "3. Voir nombre interventions\n" +
+                          "4. Nouvelle séance de sport\n" +
+                          "5. Afficher séance de sport\n" +
+                          "6. Réinitialiser les données\n" +
+                          "7. Quitter");
 
         string ChoixUtilisateur = Console.ReadLine();
 
@@ -47,8 +55,18 @@ public class Program
                 VoirNombreInterventions();
                 break;
             case 4:
+                NouvelleSeance();
+                break;
+            case 5:
+                VoirSeanceSport();
+                break;
+            case 6:
+                ReinitialiserDonnees();
+                break;
+            case 7:
                 continuer = false;
                 break;
+
             default:
                 Console.WriteLine("Invalide.");
                 Console.ReadKey();
@@ -56,9 +74,12 @@ public class Program
         }
     }
 
+    // --------- INTERVENTION ---------
     // Fonction pour la création d'une intervention
     public static void NouvelleIntervention()
     {
+        
+        
         Console.Clear();
         Console.WriteLine("--- Nouvelle Intervention ---");
 
@@ -186,6 +207,77 @@ public class Program
         RetourMenu();
     }
     
+    // --------- SPORT ---------
+    // Fonction pour la création d'une séance de sport
+    static void NouvelleSeance()
+    {
+        Console.Clear();Console.Clear();
+        Console.WriteLine("--- Nouvelle Séance ---");
+
+        Console.WriteLine("Date : ");
+        string date = Console.ReadLine();
+
+        string nbExercices;
+        int nombreExercices;
+        Console.Write("Nombres Exercice : ");
+        nbExercices = Console.ReadLine();
+
+        if (!int.TryParse(nbExercices, out nombreExercices))
+        {
+            Console.WriteLine("Invalide");
+            return;
+        }
+
+        List<string> nomExercices = new List<string>();
+        for (int i = 0; i < nombreExercices; i++)
+        {
+            Console.WriteLine($"{i + 1} : ");
+            string exo = Console.ReadLine();
+            nomExercices.Add(exo);
+        }
+        
+        Sport seance = new Sport
+        {
+            Date = date,
+            NombreExo = nombreExercices,
+            NomExo = nomExercices
+        };
+
+        seanceSport.Add(seance);
+        SauvegarderSport();
+        
+        Console.Clear();
+        Console.WriteLine("--- Internvetion enregistrée ---");
+        
+        RetourMenu();
+    }
+
+    static void VoirSeanceSport()
+    {
+        Console.Clear();
+        Console.WriteLine("--- Liste des séances de sport ---");
+
+        if (seanceSport.Count == 0)
+        {
+            Console.WriteLine("Aucune séance enregistrée.");
+            return;
+        }
+
+        foreach (var i in seanceSport)
+        {
+            Console.WriteLine($"{i.Date} | {i.NombreExo} exercices");
+
+            foreach (var exo in i.NomExo)
+            {
+                Console.WriteLine($"- {exo}");
+            }
+            Console.WriteLine();
+        }
+        
+        RetourMenu();
+    }
+    
+    
     // Fonction pour retourner au menu 
     static void RetourMenu()
     {
@@ -203,6 +295,31 @@ public class Program
 
         File.WriteAllText("interventions.json", json);
     }
+
+    // Fonction pour sauvegarder les séances de Sport
+    static void SauvegarderSport()
+    {
+        string json = JsonSerializer.Serialize(seanceSport, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
+
+        File.WriteAllText("seancesport.json", json);
+    }
+    
+    // Fonction pour charger les séances de sport
+    static void ChargerIntervention()
+    {
+        if (!File.Exists("seancesport.json"))
+            return;
+
+        string json = File.ReadAllText("seancesport.json");
+
+        var data = JsonSerializer.Deserialize<List<Sport>>(json);
+
+        if (data != null)
+            seanceSport = data;
+    }
     
     // Fonction qui permets de charger les intervention pour les afficher dans la fonction 'VoirIntervention'
     static void ChargerInterventions()
@@ -217,4 +334,32 @@ public class Program
         if (data != null)
             interventions = data;
     }
+    
+    // Fonction pour supprimer les données des fichiers json
+    static void ReinitialiserDonnees()
+    {
+        Console.Clear();
+        Console.WriteLine("⚠️ ATTENTION ⚠️");
+        Console.WriteLine("Cette action supprimera TOUTES les données.");
+        Console.WriteLine("Confirmer ? (O/N)");
+
+        string confirmation = Console.ReadLine();
+
+        if (confirmation?.ToUpper() != "O")
+        {
+            Console.WriteLine("Annulé.");
+            RetourMenu();
+            return;
+        }
+
+        interventions.Clear();
+        seanceSport.Clear();
+
+        SauvegarderInterventions();
+        SauvegarderSport();
+
+        Console.WriteLine("Toutes les données ont été réinitialisées.");
+        RetourMenu();
+    }
+
 }
