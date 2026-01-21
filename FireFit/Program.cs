@@ -164,8 +164,8 @@ public class Program
         Console.Clear();
         Console.WriteLine($"Vous avez au total : {interventions.Count} interventions \n\n");
         
+        // Voir le nombre d'intervention par engin
         Dictionary<string, int> enginInterventions = new Dictionary<string, int>();
-
         foreach (var i in interventions)
         {
             string engin = i.Engin;
