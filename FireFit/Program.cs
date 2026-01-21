@@ -161,7 +161,33 @@ public class Program
     // Fonction pour voir le nombre d'intervention 
     static void VoirNombreInterventions()
     {
+        Console.Clear();
         Console.WriteLine($"Vous avez au total : {interventions.Count} interventions \n\n");
+        
+        Dictionary<string, int> enginInterventions = new Dictionary<string, int>();
+
+        foreach (var i in interventions)
+        {
+            string engin = i.Engin;
+
+            if (enginInterventions.ContainsKey(engin))
+            {
+                enginInterventions[engin]++;
+            }
+            else
+            {
+                enginInterventions[engin] = 1;
+            }
+        }
+
+        Console.WriteLine("--- Nombre interventions par engin ---");
+        foreach (var x in enginInterventions)
+        {
+            Console.WriteLine($"{x.Key} : {x.Value}");
+        }
+        
+        Console.WriteLine("Appuyez sur une touche pour revenir au menu");
+        Console.ReadKey();
     }
     
     // Fonction pour charger l'intervention dans le .json
