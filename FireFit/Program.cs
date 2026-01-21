@@ -87,9 +87,8 @@ public class Program
         
         Console.Clear();
         Console.WriteLine("--- Internvetion enregistrée ---");
-        Console.WriteLine("Appuyez sur une touche pour revenir au menu");
-        Console.ReadKey();
-
+        
+        RetourMenu();
     }
 
     // Fonction pour voir les interventions enregistrées (via le fichier .json)
@@ -127,8 +126,7 @@ public class Program
         else
         {
             Console.WriteLine("Invalide");
-            Console.WriteLine("Appuyez sur une touche pour revenir au menu");
-            Console.ReadKey();
+            RetourMenu();
         }
     }
     
@@ -154,8 +152,7 @@ public class Program
             Console.WriteLine("Aucune intervention pour cet engin.");
         }
         
-        Console.WriteLine("Appuyez sur une touche pour revenir au menu");
-        Console.ReadKey();
+        RetourMenu();
     }
 
     // Fonction pour voir le nombre d'intervention 
@@ -186,6 +183,12 @@ public class Program
             Console.WriteLine($"{x.Key} : {x.Value}");
         }
         
+        RetourMenu();
+    }
+    
+    // Fonction pour retourner au menu 
+    static void RetourMenu()
+    {
         Console.WriteLine("Appuyez sur une touche pour revenir au menu");
         Console.ReadKey();
     }
