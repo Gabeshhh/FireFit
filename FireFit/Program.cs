@@ -32,7 +32,8 @@ public class Program
                           "4. Nouvelle séance de sport\n" +
                           "5. Afficher séance de sport\n" +
                           "6. Réinitialiser les données\n" +
-                          "7. Quitter");
+                          "7. Stats des internventions\n" +
+                          "8. Quitter");
 
         string ChoixUtilisateur = Console.ReadLine();
 
@@ -64,6 +65,9 @@ public class Program
                 ReinitialiserDonnees();
                 break;
             case 7:
+                StatsInterventions();
+                break;
+            case 8:
                 continuer = false;
                 break;
 
@@ -206,6 +210,32 @@ public class Program
         
         RetourMenu();
     }
+
+    static void StatsInterventions()
+    {
+        Console.Clear();
+        Console.WriteLine("--- Stats interventions ---");
+        Dictionary<string, int> statsParMois = new Dictionary<string, int>();
+
+        foreach (var i in interventions)
+        {
+            string moisAnnee = i.Date.Substring(3);
+
+            if (statsParMois.ContainsKey(moisAnnee))
+            {
+                statsParMois[moisAnnee]++;
+            }
+            else 
+                statsParMois[moisAnnee] = 1;
+        }
+
+        foreach (var s in statsParMois)
+        {
+            Console.WriteLine($"{s.Key} : {s.Value} interventions");
+        }
+        
+        RetourMenu();
+    }
     
     // --------- SPORT ---------
     // Fonction pour la création d'une séance de sport
@@ -221,7 +251,7 @@ public class Program
         int nombreExercices;
         Console.Write("Nombres Exercice : ");
         nbExercices = Console.ReadLine();
-
+    
         if (!int.TryParse(nbExercices, out nombreExercices))
         {
             Console.WriteLine("Invalide");
@@ -361,5 +391,4 @@ public class Program
         Console.WriteLine("Toutes les données ont été réinitialisées.");
         RetourMenu();
     }
-
 }
