@@ -22,6 +22,7 @@ public class VoirInter
         
 
         Console.WriteLine("Si vous voulez filtrer par engin tapez 1");
+        Console.WriteLine("Sinon, appuyez tapez 2");
         string choix = Console.ReadLine();
         
         int choixUtilisateur;
@@ -34,6 +35,11 @@ public class VoirInter
         if (choixUtilisateur == 1)
         {
             FiltrerInter.FiltreIntervention();
+        }
+        else if (choixUtilisateur == 2)
+        {
+            Console.WriteLine("D'accord.");
+            Program.RetourMenu();
         }
         else
         {

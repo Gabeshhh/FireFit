@@ -14,6 +14,7 @@ public class Program
     static void Main()
     {
         ChargerInterventions();
+        ChargerSport();
         
         while (continuer)
         {
@@ -59,8 +60,8 @@ public class Program
                           "3. Voir nombre interventions\n" +
                           "4. Nouvelle séance de sport\n" +
                           "5. Afficher séance de sport\n" +
-                          "6. Réinitialiser les données\n" +
-                          "7. Stats des internventions\n" +
+                          "6. Stats des internventions\n" +
+                          "7. Réinitialiser les données\n" +
                           "8. Quitter");
 
         string ChoixUtilisateur = Console.ReadLine();
@@ -90,10 +91,10 @@ public class Program
                 VoirSeances.VoirSeanceSport();
                 break;
             case 6:
-                Reset.ReinitialiserDonnees();
+                StatsInter.StatsInterventions();
                 break;
             case 7:
-                StatsInter.StatsInterventions();
+                Reset.ReinitialiserDonnees();
                 break;
             case 8:
                 continuer = false;
